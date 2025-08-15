@@ -1,0 +1,30 @@
+# Byte-compiled / optimized / DLL files
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Jupyter Notebook checkpoints
+.ipynb_checkpoints
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Python virtualenv
+env/
+venv/
+.venv/
+
+# Data / exports (do NOT commit large CSVs)
+data/
+*.csv
+
+# Editor
+.vscode/
+.idea/
+
+# Mac
+.Spotlight-V100
+
+# Logs
+*.log
