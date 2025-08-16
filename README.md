@@ -1,33 +1,85 @@
-# E‑Commerce Order Analytics — Week 1 (Repo Starter)
+### 📦 E-Commerce Order Analytics (SQL-Only ETL)
 
-This repository contains the **Week 1** project skeleton for the E‑Commerce Order Analytics pipeline.
-It includes staging DDL, a recommended normalized schema, basic docs, and a `.gitignore` so you can
-initialize a Git repo and push to GitHub quickly.
+A portfolio project that demonstrates end-to-end SQL-based ETL (Extract, Transform, Load) skills using synthetic e-commerce order data.
 
-## What this commit contains
-- `sql/staging/generated_staging_ddl.sql` — auto-generated staging CREATE TABLE statements (all columns TEXT).
-- `sql/normalized_schema_ddl.sql` — recommended normalized schema (customers, products, orders, order_items, expenses).
-- `docs/initial_data_observations.md` — short observations about the uploaded CSVs.
-- `.gitignore` — common ignores for Postgres, Python, and OS files.
-- `create_repo.sh` — helper script to initialize git and create a GitHub repo using `gh` (optional fallback instructions included).
-
-## Quick local setup (recommended)
-1. Download and extract the ZIP attached to this message (or clone if you push this repo to GitHub).
-2. Move the folder to your desired projects directory, e.g. `C:\Users\<you>\Projects\` or `~/projects/`.
-3. Optional: Place the full CSV exports in a local folder outside the repo (e.g. `~/data/ecommerce/`) and do **not** commit them to GitHub.
-4. Run the helper script to initialize git and create the remote (see below).
-
-## How to create the GitHub repo and push (one-line summary)
-- If you have GitHub CLI (`gh`) installed and authenticated, run:
-  ```bash
-  ./create_repo.sh my-github-repo-name "E-Commerce Order Analytics - Week 1" 
-  ```
-- If you don't have `gh`, the script prints the fallback git commands and a short checklist to create a repo via the GitHub website and push your local branch.
-
-## Acceptance criteria for this commit
-- Repo contains the staging DDL and normalized schema SQL.
-- README explains what to run next (staging table creation + CSV import).
-- A branch `feature/initial-ingestion` is created locally and pushed to GitHub.
+This project avoids Python/ETL tools at the start, focusing purely on SQL transformations inside PostgreSQL. The aim is to showcase data modeling, cleaning, normalization, and analytics — the building blocks of any professional data engineering pipeline.
 
 ---
-Next session we will draft the first SQL ETL transform (staging → normalized) and the initial Airflow DAG skeleton.
+
+## 🎯 Project Goals
+
+- Practice SQL-only ETL pipelines using raw CSV data.
+- Create staging & normalized schemas in PostgreSQL.
+- Implement data cleaning, deduplication, and integrity checks with SQL.
+- Document a production-style repo structure for portfolio use.
+- Prepare the project for future orchestration with Airflow and integration with BI tools.
+
+---
+
+## 📂 Repository Structure
+```plaintext
+ecommerce-order-analytics/
+│
+├── docs/
+│   └── initial_data_observations.md   # Notes from exploring raw CSV
+│
+├── sql/
+│   ├── staging/
+│   │   └── generated_staging_ddl.sql  # Auto-generated DDL for staging table
+│   ├── normalized_schema_ddl.sql      # Handcrafted normalized schema
+│   └── transforms/                    # (To be added in Week 2+)
+│
+├── .gitignore
+├── README.md                          # This file
+└── create_repo.sh                     # Helper script for GitHub repo setup
+```
+---
+
+## 🗂️ Data Source
+
+- Synthetic dataset (ecommerce_orders.csv) generated for training purposes.
+- It mimics a real-world multi-category e-commerce order table with:
+- Order metadata (IDs, timestamps, statuses)
+- Customer information (IDs, names, emails)
+- Product details (IDs, categories, prices)
+- Shipping & payment info
+
+---
+
+## 🚀 Current Progress
+
+# Week 1:
+
+✅ Project skeleton created
+
+✅ Repo initialized with docs + SQL DDLs
+
+✅ Staging schema auto-generated from raw CSV headers
+
+✅ Normalized schema drafted
+
+# 📌 Roadmap
+
+Week 2: Transformations → staging → normalized
+
+Week 3: Data cleaning (deduplication, integrity rules)
+
+Week 4: Analytics-ready marts (sales trends, customer insights)
+
+Future: Orchestration with Apache Airflow
+
+---
+
+🛠️ Tech Stack
+
+PostgreSQL 15+ (main database & SQL engine)
+
+Git + GitHub (version control & collaboration)
+
+Optional later: Airflow, Docker, Power BI
+
+---
+
+👩‍💻 Author
+
+Aakash Pal — aspiring Data Engineer building hands-on ETL & SQL portfolio projects.
