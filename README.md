@@ -34,6 +34,16 @@ ecommerce-order-analytics/
 └── create_repo.sh                     # Helper script for GitHub repo setup
 ```
 ---
+## Tech stack
+
+- PostgreSQL (primary analytical store)
+- Docker (containerize ETL steps)
+- Python (small utilities: CSV loader, FX fetcher)
+- SQL (transformations & tests)
+- Windows Task Scheduler (for scheduled runs) — optional alternative: GitHub Actions
+- Power BI (reporting)
+---
+
 
 ## 🗂️ Data Source
 
@@ -43,6 +53,17 @@ ecommerce-order-analytics/
 - Customer information (IDs, names, emails)
 - Product details (IDs, categories, prices)
 - Shipping & payment info
+
+---
+
+## Inventory & Warehouse Cost Optimization (project focus)
+
+Business goal: Use cloud_warehouse_comparison_chart_raw together with sales & shipping data to recommend cheaper fulfillment methods or shipping partners per SKU/region.
+Analysis approach:
+Normalize warehouse / shipping pricing into a table warehouse_prices with columns (vendor, service_level, warehouse_price_per_kg, effective_date).
+For each shipment in fact_sales, estimate shipping cost by weight: estimated_shipping = product_weight_kg * vendor_rate_per_kg (match by region/zone when possible).
+Compare vendor shipping estimates to actual shipping cost recorded in orders (if available), and aggregate by SKU/category to find cheapest provider per region.
+Output recommendations: recommended_vendor_by_sku_region with uplift/cost savings.
 
 ---
 
