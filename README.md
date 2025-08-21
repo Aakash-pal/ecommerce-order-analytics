@@ -1,106 +1,96 @@
-### 📦 E-Commerce Order Analytics (SQL-Only ETL)
+# 🛒 Ecommerce Order Analytics
 
-A portfolio project that demonstrates end-to-end SQL-based ETL (Extract, Transform, Load) skills using synthetic e-commerce order data.
+## 📌 Objective
 
-This project avoids Python/ETL tools at the start, focusing purely on SQL transformations inside PostgreSQL. The aim is to showcase data modeling, cleaning, normalization, and analytics — the building blocks of any professional data engineering pipeline.
+The objective of this project is to design and implement an **end-to-end data engineering pipeline** for e-commerce sales data. The project focuses on extracting raw sales and expense data from multiple sources, cleaning and transforming it into structured formats, and loading it into a database or data warehouse for analysis. The final goal is to generate **meaningful business insights** such as profit/loss trends, regional sales performance, product category analysis, and operational cost breakdowns.
 
----
-
-## 🎯 Project Goals
-
-- Practice SQL-only ETL pipelines using raw CSV data.
-- Create staging & normalized schemas in PostgreSQL.
-- Implement data cleaning, deduplication, and integrity checks with SQL.
-- Document a production-style repo structure for portfolio use.
-- Prepare the project for future orchestration with Airflow and integration with BI tools.
+This project demonstrates practical ETL skills, SQL transformation logic, and the integration of multiple datasets into a unified analytics pipeline. It is also structured to be portfolio-ready, showcasing production-style practices.
 
 ---
 
 ## 📂 Repository Structure
-```plaintext
-ecommerce-order-analytics/
-│
-├── docs/
-│   └── initial_data_observations.md   # Notes from exploring raw CSV
-│
-├── sql/
-│   ├── staging/
-│   │   └── generated_staging_ddl.sql  # Auto-generated DDL for staging table
-│   ├── normalized_schema_ddl.sql      # Handcrafted normalized schema
-│   └── transforms/                    # (To be added in Week 2+)
-│
-├── .gitignore
-├── README.md                          # This file
-└── create_repo.sh                     # Helper script for GitHub repo setup
+
 ```
----
-## Tech stack
-
-- PostgreSQL (primary analytical store)
-- Docker (containerize ETL steps)
-- Python (small utilities: CSV loader, FX fetcher)
-- SQL (transformations & tests)
-- Windows Task Scheduler (for scheduled runs) — optional alternative: GitHub Actions
-- Power BI (reporting)
----
-
-
-## 🗂️ Data Source
-
-- Synthetic dataset (ecommerce_orders.csv) generated for training purposes.
-- It mimics a real-world multi-category e-commerce order table with:
-- Order metadata (IDs, timestamps, statuses)
-- Customer information (IDs, names, emails)
-- Product details (IDs, categories, prices)
-- Shipping & payment info
+Ecommerce-Order-Analytics/
+│-- data/                     # Raw CSVs (Amazon, International Sales, Expenses, etc.)
+│-- sql_etl/                  # SQL scripts for cleaning and transformations
+│-- scripts/                  # Python scripts for automation and integration
+│-- airflow/                  # Orchestration workflows (future scope)
+│-- reports/                  # Power BI / Tableau dashboards (future scope)
+│-- README.md                 # Project overview
+```
 
 ---
 
-## Inventory & Warehouse Cost Optimization (project focus)
+## ⚙️ Data Sources
 
-Business goal: Use cloud_warehouse_comparison_chart_raw together with sales & shipping data to recommend cheaper fulfillment methods or shipping partners per SKU/region.
-Analysis approach:
-Normalize warehouse / shipping pricing into a table warehouse_prices with columns (vendor, service_level, warehouse_price_per_kg, effective_date).
-For each shipment in fact_sales, estimate shipping cost by weight: estimated_shipping = product_weight_kg * vendor_rate_per_kg (match by region/zone when possible).
-Compare vendor shipping estimates to actual shipping cost recorded in orders (if available), and aggregate by SKU/category to find cheapest provider per region.
-Output recommendations: recommended_vendor_by_sku_region with uplift/cost savings.
+The following raw datasets were used in this project:
 
----
+* `Amazon Sale Report.csv` → Sales report from Amazon channel
+* `International sale Report.csv` → Global e-commerce sales data
+* `Sale Report.csv` → Consolidated domestic sales
+* `Expense IIGF.csv` → Expense details
+* `P L March 2021.csv` → Profit & Loss statements
+* `May-2022.csv` → Monthly transaction snapshot
+* `Cloud Warehouse Comparison Chart.csv` → Reference chart for cloud cost comparisons
 
-## 🚀 Current Progress
-
-# Week 1:
-
-✅ Project skeleton created
-
-✅ Repo initialized with docs + SQL DDLs
-
-✅ Staging schema auto-generated from raw CSV headers
-
-✅ Normalized schema drafted
-
-# 📌 Roadmap
-
-Week 2: Transformations → staging → normalized
-
-Week 3: Data cleaning (deduplication, integrity rules)
-
-Week 4: Analytics-ready marts (sales trends, customer insights)
-
-Future: Orchestration with Apache Airflow
+📌 **Data Source Credit:** The dataset was originally published on Kaggle: [Unlock Profits with E-commerce Sales Data](https://www.kaggle.com/datasets/thedevastator/unlock-profits-with-e-commerce-sales-data/data).
 
 ---
 
-🛠️ Tech Stack
+## 🚀 Features
 
-PostgreSQL 15+ (main database & SQL engine)
-
-Git + GitHub (version control & collaboration)
-
-Optional later: Airflow, Docker, Power BI
+* SQL-based ETL pipeline (raw → staging → transformed)
+* Data quality checks and cleaning logic
+* Exploratory Data Analysis (EDA) for insights
+* Integration of **sales + expenses** for profitability analysis
+* Ready-to-use structure for Power BI / Tableau dashboards
 
 ---
 
-👩‍💻 Author
+## 🔧 Tech Stack
 
-Aakash Pal — aspiring Data Engineer building hands-on ETL & SQL portfolio projects.
+* **Database:** PostgreSQL
+* **ETL Logic:** SQL, Python
+* **Orchestration:** Apache Airflow (future scope)
+* **Visualization:** Power BI / Tableau (future scope)
+* **Version Control:** Git & GitHub
+
+---
+
+## 📊 Example Insights
+
+* Regional sales performance and growth trends
+* Contribution of Amazon vs. International channels
+* Profitability after expense allocation
+* Seasonal patterns in sales
+* Cloud warehouse cost-effectiveness (reference)
+
+---
+
+## 📘 How to Use
+
+1. Clone the repository:
+
+   ```bash
+   git clone https://github.com/Aakash-pal/ecommerce-order-analytics.git
+   ```
+2. Load raw CSV files into PostgreSQL.
+3. Run SQL scripts in the `sql_etl/` folder to clean and transform data.
+4. (Optional) Automate with Python / Airflow.
+5. Build dashboards in Power BI / Tableau using the transformed tables.
+
+---
+
+## ✨ Future Enhancements
+
+* Automate pipeline with Apache Airflow
+* Deploy dashboards with scheduled refresh
+* Machine learning forecasts for future sales
+
+---
+
+## 🙌 Credits
+
+* Dataset Source: [Unlock Profits with E-commerce Sales Data – Kaggle](https://www.kaggle.com/datasets/thedevastator/unlock-profits-with-e-commerce-sales-data/data)
+* Developed as part of a **portfolio project** to demonstrate data engineering and analytics skills.
