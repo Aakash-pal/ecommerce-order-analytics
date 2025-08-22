@@ -88,29 +88,61 @@ SELECT
     raw_ingested_at
 FROM international_sale_report_raw;
 ---------------------------------------------------------------------------------------------------------------
-DROP TABLE IF EXISTS stg_may_2022;
+-- Step 1: Drop staging table if exists (safety)
+DROP TABLE IF EXISTS staging_may_2022;
 
-CREATE TABLE stg_may_2022 AS
+-- Step 2: Create staging table with correct datatypes
+CREATE TABLE staging_may_2022 (
+    staging_id      SERIAL PRIMARY KEY,
+	row_index       INT,
+    sku             VARCHAR(50),
+    style_id        VARCHAR(50),
+    catalog         VARCHAR(50),
+    category        VARCHAR(50),
+    weight          NUMERIC(8,3),
+    tp              NUMERIC(10,2),
+    mrp_old         NUMERIC(10,2),
+	final_mrp_old   NUMERIC(10,2),
+    ajio_mrp        NUMERIC(10,2),
+    amazon_mrp      NUMERIC(10,2),
+    amazon_fba_mrp  NUMERIC(10,2),
+    flipkart_mrp    NUMERIC(10,2),
+    limeroad_mrp    NUMERIC(10,2),
+    myntra_mrp      NUMERIC(10,2),
+    paytm_mrp       NUMERIC(10,2),
+	snapdeal_mrp    NUMERIC(10,2),
+	staging_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- Step 3: Insert data from raw table, applying cleaning/transformation
+INSERT INTO staging_may_2022 (
+    row_index,sku,style_id,catalog,category,weight,tp,
+    mrp_old,final_mrp_old,ajio_mrp,amazon_mrp,amazon_fba_mrp,flipkart_mrp,
+    limeroad_mrp,myntra_mrp,paytm_mrp,snapdeal_mrp,staging_created
+)
 SELECT
-    row_index,
-    trim(sku)                                  AS sku,
-    trim(style_id)                             AS style_id,
-    nullif(trim(catalog), '')                  AS catalog,
-    nullif(trim(category), '')                 AS category,
-    regexp_replace(weight, '[^0-9.\-]', '', 'g')::numeric AS weight,
-    regexp_replace(tp, '[^0-9.\-]', '', 'g')::numeric AS tp,
-    regexp_replace(mrp_old, '[^0-9.\-]', '', 'g')::numeric AS mrp_old,
-    regexp_replace(final_mrp_old, '[^0-9.\-]', '', 'g')::numeric AS final_mrp_old,
-    regexp_replace(ajio_mrp, '[^0-9.\-]', '', 'g')::numeric AS ajio_mrp,
-    regexp_replace(amazon_mrp, '[^0-9.\-]', '', 'g')::numeric AS amazon_mrp,
-    regexp_replace(amazon_fba_mrp, '[^0-9.\-]', '', 'g')::numeric AS amazon_fba_mrp,
-    regexp_replace(flipkart_mrp, '[^0-9.\-]', '', 'g')::numeric AS flipkart_mrp,
-    regexp_replace(limeroad_mrp, '[^0-9.\-]', '', 'g')::numeric AS limeroad_mrp,
-    regexp_replace(myntra_mrp, '[^0-9.\-]', '', 'g')::numeric AS myntra_mrp,
-    regexp_replace(paytm_mrp, '[^0-9.\-]', '', 'g')::numeric AS paytm_mrp,
-    regexp_replace(snapdeal_mrp, '[^0-9.\-]', '', 'g')::numeric AS snapdeal_mrp,
-    raw_ingested_at
-FROM may_2022_raw;
+    CAST(row_index as INT),
+    TRIM(UPPER(sku)),
+    TRIM(UPPER(style_id)),
+    NULLIF(TRIM(catalog), 'Nill'),
+    NULLIF(TRIM(category), 'Nill'),
+    -- Use regex to keep only numeric values
+    CAST(CASE WHEN weight ~ '^[0-9.]+$' THEN weight ELSE NULL END AS NUMERIC(8,3)),
+    CAST(CASE WHEN tp ~ '^[0-9.]+$' THEN tp ELSE NULL END AS NUMERIC(10,2)),
+    CAST(CASE WHEN mrp_old ~ '^[0-9.]+$' THEN mrp_old ELSE NULL END AS NUMERIC(10,2)),
+	CAST(CASE WHEN final_mrp_old ~ '^[0-9.]+$' THEN final_mrp_old ELSE NULL END AS NUMERIC(10,2)),
+    CAST(CASE WHEN ajio_mrp ~ '^[0-9.]+$' THEN ajio_mrp ELSE NULL END AS NUMERIC(10,2)),
+    CAST(CASE WHEN amazon_mrp ~ '^[0-9.]+$' THEN amazon_mrp ELSE NULL END AS NUMERIC(10,2)),
+    CAST(CASE WHEN amazon_fba_mrp ~ '^[0-9.]+$' THEN amazon_fba_mrp ELSE NULL END AS NUMERIC(10,2)),
+    CAST(CASE WHEN flipkart_mrp ~ '^[0-9.]+$' THEN flipkart_mrp ELSE NULL END AS NUMERIC(10,2)),
+    CAST(CASE WHEN limeroad_mrp ~ '^[0-9.]+$' THEN limeroad_mrp ELSE NULL END AS NUMERIC(10,2)),
+    CAST(CASE WHEN myntra_mrp ~ '^[0-9.]+$' THEN myntra_mrp ELSE NULL END AS NUMERIC(10,2)),
+    CAST(CASE WHEN paytm_mrp ~ '^[0-9.]+$' THEN paytm_mrp ELSE NULL END AS NUMERIC(10,2)),
+    CAST(CASE WHEN snapdeal_mrp ~ '^[0-9.]+$' THEN snapdeal_mrp ELSE NULL END AS NUMERIC(10,2)),
+    CURRENT_TIMESTAMP
+FROM may_2022_raw 
+WHERE style_id IS NOT NULL;
+
 ----------------------------------------------------------------------------------------------------------
 DROP TABLE IF EXISTS stg_sale_report;
 
