@@ -16,8 +16,7 @@ venv/
 .venv/
 
 # Data / exports (do NOT commit large CSVs)
-data/
-*.csv
+!data/*.csv   # allow CSVs inside data folder
 
 # Editor
 .vscode/

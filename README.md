@@ -27,7 +27,7 @@ Ecommerce-Order-Analytics/
 The following raw datasets were used in this project:
 
 * `Amazon Sale Report.csv` → Sales report from Amazon channel
-* `International sale Report.csv` → Global e-commerce sales data
+* `International sale Report.csv` → Updated Global e-commerce sales data
 * `Sale Report.csv` → Consolidated domestic sales
 * `Expense IIGF.csv` → Expense details
 * `P L March 2021.csv` → Profit & Loss statements
